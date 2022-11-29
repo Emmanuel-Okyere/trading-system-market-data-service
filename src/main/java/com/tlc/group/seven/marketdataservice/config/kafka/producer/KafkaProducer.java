@@ -19,7 +19,7 @@ public class KafkaProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendResponseToKafka(String data){
+    public void sendResponseToKafkaMarketData(String data){
         LOGGER.info(String.format("Response sent to Kafka -> %s", data));
         Message<String> message = MessageBuilder
                 .withPayload(data)
@@ -27,4 +27,5 @@ public class KafkaProducer {
                 .build();
         kafkaTemplate.send(message);
     }
+
 }
