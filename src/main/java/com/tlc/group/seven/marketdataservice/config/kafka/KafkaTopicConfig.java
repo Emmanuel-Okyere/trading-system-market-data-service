@@ -9,7 +9,8 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic marketDataTopic(){
         return TopicBuilder
-                .name("${spring.kafka.topic.name}")
+                .name("market-data")
+                .partitions(3)
                 .build();
     }
 }
