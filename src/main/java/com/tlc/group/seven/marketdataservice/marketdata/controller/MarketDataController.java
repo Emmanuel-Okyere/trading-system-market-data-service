@@ -24,7 +24,7 @@ public class MarketDataController {
     @PostMapping("/webhook")
 	public void latestOrder(@RequestBody OrderData data){
 		System.out.println(data);
-		LogData logData = new LogData("webhook", "latestOrder", "Webhook url updated", "market-data", new Date());
+		LogData logData = new LogData("webhook", "latestOrder", "Webhook url triggered", "market-data", new Date());
 		kafkaProducer.sendResponseToKafkaLogData(logData);
 	}
 
