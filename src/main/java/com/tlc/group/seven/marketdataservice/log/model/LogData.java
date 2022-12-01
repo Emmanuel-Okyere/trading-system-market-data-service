@@ -1,4 +1,4 @@
-package com.tlc.group.seven.marketdataservice.model;
+package com.tlc.group.seven.marketdataservice.log.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

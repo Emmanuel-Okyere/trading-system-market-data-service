@@ -1,6 +1,6 @@
-package com.tlc.group.seven.marketdataservice.config.kafka.producer;
+package com.tlc.group.seven.marketdataservice.kafka.producer;
 
-import com.tlc.group.seven.marketdataservice.model.LogData;
+import com.tlc.group.seven.marketdataservice.log.model.LogData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
