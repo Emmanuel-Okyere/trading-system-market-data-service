@@ -2,6 +2,7 @@ package com.tlc.group.seven.marketdataservice.kafka.controller;
 
 import com.tlc.group.seven.marketdataservice.kafka.producer.KafkaProducer;
 import com.tlc.group.seven.marketdataservice.log.model.LogData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import java.util.Date;
 
 @RestController
 public class TestKafkaController {
+    @Autowired
     private KafkaProducer kafkaProducer;
 
     public TestKafkaController(KafkaProducer kafkaProducer) {
