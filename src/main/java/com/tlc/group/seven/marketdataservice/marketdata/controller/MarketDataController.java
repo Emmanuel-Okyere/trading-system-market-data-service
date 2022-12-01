@@ -1,5 +1,7 @@
-package com.tlc.group.seven.marketdataservice;
+package com.tlc.group.seven.marketdataservice.marketdata.controller;
 
+import com.tlc.group.seven.marketdataservice.marketdata.model.MarketData;
+import com.tlc.group.seven.marketdataservice.marketdata.model.OrderData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -7,13 +9,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @RestController
 @RequestMapping("/api/v1")
-public class MarketDataServiceController {
+public class MarketDataController {
 
 	@Autowired
 	private WebClient.Builder webClientBuilder;
 
     @PostMapping("/webhook")
-	public void latestOrder(@RequestBody OrderData data){	
+	public void latestOrder(@RequestBody OrderData data){
 		System.out.println(data);
 	}
 

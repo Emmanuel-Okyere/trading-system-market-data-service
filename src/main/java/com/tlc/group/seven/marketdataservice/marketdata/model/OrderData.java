@@ -1,4 +1,4 @@
-package com.tlc.group.seven.marketdataservice;
+package com.tlc.group.seven.marketdataservice.marketdata.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
