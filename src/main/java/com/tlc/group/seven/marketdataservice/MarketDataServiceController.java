@@ -1,26 +1,23 @@
 package com.tlc.group.seven.marketdataservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
 
 @RestController
+@RequestMapping("/api/v1")
 public class MarketDataServiceController {
 
 	@Autowired
 	private WebClient.Builder webClientBuilder;
 
-    @PostMapping("/api/latest/pd")
+    @PostMapping("/webhook")
 	public void latestOrder(@RequestBody OrderData data){	
 		System.out.println(data);
-		
 	}
 
-	@GetMapping("/market-data")
+	@GetMapping("/pd")
 	public MarketData[] getMarketData(){
 
 		return webClientBuilder.build()
