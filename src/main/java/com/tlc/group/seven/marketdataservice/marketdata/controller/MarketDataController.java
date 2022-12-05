@@ -21,23 +21,32 @@ public class MarketDataController {
 	@Autowired
 	private KafkaProducer kafkaProducer;
 
-    @PostMapping("/webhook")
-	public void latestOrder(@RequestBody OrderData data){
+    @PostMapping("/webhook/{exchange}")	
+	public void latestOrder(@PathVariable String exchange, @RequestBody OrderData data){
 		System.out.println(data);
+		if (exchange == "exchange1"){
+			  MarketData[] lastestMarketData = getMarketData("https://exchange.matraining.com/pd");
+			  kafkaProducer.sendResponseToKafkaMarketData(lastestMarketData);
+		}
+		else if (exchange == "exchange2"){
+			MarketData[] lastestMarketData = getMarketData("https://exchange2.matraining.com/pd");
+			kafkaProducer.sendResponseToKafkaMarketData(lastestMarketData);
+		}
 		LogData logData = new LogData("webhook", "latestOrder", "Webhook url triggered", "market-data", new Date());
 		kafkaProducer.sendResponseToKafkaLogData(logData);
 	}
 
-	@GetMapping("/pd")
-	public MarketData[] getMarketData(){
-		LogData logData = new LogData("market data", "getMarketData", "market data fetch from exchange", "market-data", new Date());
-		kafkaProducer.sendResponseToKafkaLogData(logData);
 
+	private MarketData[] getMarketData(String exchange){
+		LogData logData = new LogData("market data", "getMarketData", "market data fetch from exchange", "market-data", new Date());
+
+		kafkaProducer.sendResponseToKafkaLogData(logData);
 		return webClientBuilder.build()
 		.get()
-		.uri("https://exchange.matraining.com/pd")
+		.uri(exchange)
 		.retrieve()
 		.bodyToMono(MarketData[].class)
 		.block();
 	}
 }
+

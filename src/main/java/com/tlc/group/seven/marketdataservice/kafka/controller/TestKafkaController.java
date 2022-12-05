@@ -2,6 +2,8 @@ package com.tlc.group.seven.marketdataservice.kafka.controller;
 
 import com.tlc.group.seven.marketdataservice.kafka.producer.KafkaProducer;
 import com.tlc.group.seven.marketdataservice.log.model.LogData;
+import com.tlc.group.seven.marketdataservice.marketdata.model.MarketData;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +22,7 @@ public class TestKafkaController {
     }
 
     @PostMapping("/api/v1/kafka/test")
-    public ResponseEntity<String> testKafka(@RequestBody String data){
+    public ResponseEntity<String> testKafka(@RequestBody MarketData[] data){
         kafkaProducer.sendResponseToKafkaMarketData(data);
         LogData logData = new LogData("auth-login-2", "click", "creating user account", "market-data", new Date());
         kafkaProducer.sendResponseToKafkaLogData(logData);
