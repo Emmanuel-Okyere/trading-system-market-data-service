@@ -16,10 +16,10 @@ public class KafkaProducer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
 
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, MarketData[]> kafkaTemplate;
     private KafkaTemplate<String, LogData> kafkaTemplateJson;
 
-    public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate, KafkaTemplate<String, LogData> kafkaTemplateJson) {
+    public KafkaProducer(KafkaTemplate<String, MarketData[]> kafkaTemplate, KafkaTemplate<String, LogData> kafkaTemplateJson) {
         this.kafkaTemplate = kafkaTemplate;
         this.kafkaTemplateJson = kafkaTemplateJson;
     }
