@@ -26,8 +26,7 @@ public class MarketDataServiceApplication implements CommandLineRunner {
 	private final MarketDataController marketDataController;
 	@Override
 	public void run(String... args) throws Exception{
-		marketDataController.getMarketDataFirst();
-		System.out.println("********************APP START*******************");
+		marketDataController.getMarketDataOnAppStart();
 	}
 }
 
