@@ -23,7 +23,7 @@ public class TestKafkaController {
 
     @PostMapping("/api/v1/kafka/test")
     public ResponseEntity<String> testKafka(@RequestBody MarketData[] data){
-        kafkaProducer.sendResponseToKafkaMarketData(data);
+        //kafkaProducer.sendResponseToKafkaMarketData(data);
         LogData logData = new LogData("auth-login-2", "click", "creating user account", "market-data", new Date());
         kafkaProducer.sendResponseToKafkaLogData(logData);
         return ResponseEntity.ok("Data sent to Kafka...");

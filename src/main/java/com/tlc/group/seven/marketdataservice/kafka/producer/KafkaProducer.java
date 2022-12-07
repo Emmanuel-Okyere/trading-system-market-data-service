@@ -1,6 +1,7 @@
  package com.tlc.group.seven.marketdataservice.kafka.producer;
 
 import com.tlc.group.seven.marketdataservice.log.model.LogData;
+import com.tlc.group.seven.marketdataservice.marketdata.controller.MarketData2;
 import com.tlc.group.seven.marketdataservice.marketdata.model.MarketData;
 
 import org.slf4j.Logger;
@@ -11,7 +12,9 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
-@Service
+import java.util.List;
+
+ @Service
 public class KafkaProducer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
@@ -24,9 +27,9 @@ public class KafkaProducer {
         this.kafkaTemplateJson = kafkaTemplateJson;
     }
 
-    public void sendResponseToKafkaMarketData(MarketData[] data){
+    public void sendResponseToKafkaMarketData(List<MarketData2> data){
         LOGGER.info(String.format("MarketData :: Response sent to Kafka -> %s", data.toString()));
-        Message<MarketData[]> message = MessageBuilder
+        Message<List<MarketData2>> message = MessageBuilder
                 .withPayload(data)
                 .setHeader(KafkaHeaders.TOPIC, "market-data")
                 .build();

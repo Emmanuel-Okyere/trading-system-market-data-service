@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Date;
+import java.util.List;
 
 
 @RestController
@@ -37,7 +38,7 @@ public class MarketDataController {
 
 		if (lastestMarketData != null){
 			System.out.println("kafka sent");
-			kafkaProducer.sendResponseToKafkaMarketData(lastestMarketData);
+			//kafkaProducer.sendResponseToKafkaMarketData(lastestMarketData);
 		}
 		
 		System.out.println("after all if statements");
@@ -57,6 +58,20 @@ public class MarketDataController {
 		.retrieve()
 		.bodyToMono(MarketData[].class)
 		.block();
+	}
+
+	@GetMapping("/push")
+	public List<MarketData2> pushData(){
+		List<MarketData2> data;
+		data = List.of(
+				new MarketData2(1, 0.401, 0.401, 5000, 0.401, 10000, "MSFT"),
+				new MarketData2(1, 0.401, 0.401, 5000, 0.401, 10000, "GOOGL"),
+				new MarketData2(1, 0.401, 0.401, 5000, 0.401, 10000, "IBM")
+		);
+
+		kafkaProducer.sendResponseToKafkaMarketData(data);
+		return data;
+
 	}
 }
 
