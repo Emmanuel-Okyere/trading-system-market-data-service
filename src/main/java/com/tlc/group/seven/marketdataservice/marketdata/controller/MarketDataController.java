@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 
 @RestController
@@ -24,20 +26,20 @@ public class MarketDataController {
     @PostMapping("/webhook/{exchange}")	
 	public void latestOrder(@PathVariable String exchange, @RequestBody OrderData data){
 		System.out.println(exchange+ " outside get market");
-		MarketData[] lastestMarketData = null;
+		List<MarketData> latestMarketData = null;
 		System.out.println(data);
 		if (exchange.equals("exchange1")){
 			System.out.println("exchange1");
-			lastestMarketData = getMarketData("https://exchange.matraining.com/pd");
+			latestMarketData = getMarketData("https://exchange.matraining.com/pd");
 		}
 		else if (exchange.equals("exchange2")){
 			System.out.println("exchange1");
-			lastestMarketData = getMarketData("https://exchange2.matraining.com/pd");
+			latestMarketData = getMarketData("https://exchange2.matraining.com/pd");
 		}
 
-		if (lastestMarketData != null){
+		if (latestMarketData != null){
 			System.out.println("kafka sent");
-			kafkaProducer.sendResponseToKafkaMarketData(lastestMarketData);
+			kafkaProducer.sendResponseToKafkaMarketData(latestMarketData);
 		}
 		
 		System.out.println("after all if statements");
@@ -46,17 +48,34 @@ public class MarketDataController {
 	}
 
 
-	private MarketData[] getMarketData(String exchange){
+	private List<MarketData> getMarketData(String exchange){
 		System.out.println("Callled market");
 		LogData logData = new LogData("market data", "getMarketData", "market data fetch from exchange", "market-data", new Date());
 
 		kafkaProducer.sendResponseToKafkaLogData(logData);
-		return webClientBuilder.build()
-		.get()
-		.uri(exchange)
-		.retrieve()
-		.bodyToMono(MarketData[].class)
-		.block();
+
+		List<MarketData> latestMarketData = List.of(Objects.requireNonNull(webClientBuilder.build()
+				.get()
+				.uri(exchange)
+				.retrieve()
+				.bodyToMono(MarketData[].class)
+				.block()));
+
+		kafkaProducer.sendResponseToKafkaMarketData(latestMarketData);
+		return latestMarketData;
+	}
+
+	public void getMarketDataFirst(){
+		System.out.println("Callled market");
+		LogData logData = new LogData("market data", "getMarketData", "market data fetch from exchange", "market-data", new Date());
+
+		kafkaProducer.sendResponseToKafkaLogData(logData);
+		Objects.requireNonNull(webClientBuilder.build()
+				.get()
+				.uri("https://exchange.matraining.com/pd")
+				.retrieve()
+				.bodyToMono(MarketData[].class)
+				.block());
 	}
 }
 

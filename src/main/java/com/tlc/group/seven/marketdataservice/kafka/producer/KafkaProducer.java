@@ -11,7 +11,9 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
-@Service
+import java.util.List;
+
+ @Service
 public class KafkaProducer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
@@ -24,9 +26,9 @@ public class KafkaProducer {
         this.kafkaTemplateJson = kafkaTemplateJson;
     }
 
-    public void sendResponseToKafkaMarketData(MarketData[] data){
+    public void sendResponseToKafkaMarketData(List<MarketData> data){
         LOGGER.info(String.format("MarketData :: Response sent to Kafka -> %s", data.toString()));
-        Message<MarketData[]> message = MessageBuilder
+        Message<List<MarketData>> message = MessageBuilder
                 .withPayload(data)
                 .setHeader(KafkaHeaders.TOPIC, "market-data")
                 .build();

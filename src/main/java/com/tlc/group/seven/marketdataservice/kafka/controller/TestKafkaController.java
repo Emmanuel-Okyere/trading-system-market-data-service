@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 public class TestKafkaController {
@@ -21,11 +22,13 @@ public class TestKafkaController {
         this.kafkaProducer = kafkaProducer;
     }
 
-    @PostMapping("/api/v1/kafka/test")
-    public ResponseEntity<String> testKafka(@RequestBody MarketData[] data){
+
+    /*@PostMapping("/api/v1/kafka/test")
+    public ResponseEntity<List<MarketData>> testKafka(@RequestBody List<MarketData> data){
         kafkaProducer.sendResponseToKafkaMarketData(data);
         LogData logData = new LogData("auth-login-2", "click", "creating user account", "market-data", new Date());
         kafkaProducer.sendResponseToKafkaLogData(logData);
         return ResponseEntity.ok("Data sent to Kafka...");
     }
+    */
 }
