@@ -1,17 +1,9 @@
 package com.tlc.group.seven.marketdataservice.kafka.controller;
 
 import com.tlc.group.seven.marketdataservice.kafka.producer.KafkaProducer;
-import com.tlc.group.seven.marketdataservice.log.model.LogData;
-import com.tlc.group.seven.marketdataservice.marketdata.model.MarketData;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Date;
-import java.util.List;
 
 @RestController
 public class TestKafkaController {

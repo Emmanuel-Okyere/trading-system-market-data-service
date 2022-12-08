@@ -1,6 +1,6 @@
  package com.tlc.group.seven.marketdataservice.kafka.producer;
 
-import com.tlc.group.seven.marketdataservice.log.model.LogData;
+import com.tlc.group.seven.marketdataservice.log.model.SystemLog;
 import com.tlc.group.seven.marketdataservice.marketdata.model.MarketData;
 
 import org.slf4j.Logger;
@@ -19,9 +19,9 @@ public class KafkaProducer {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
 
     private KafkaTemplate<String, List<MarketData>> kafkaTemplate;
-    private KafkaTemplate<String, LogData> kafkaTemplateJson;
+    private KafkaTemplate<String, SystemLog> kafkaTemplateJson;
 
-    public KafkaProducer(KafkaTemplate<String, List<MarketData>> kafkaTemplate, KafkaTemplate<String, LogData> kafkaTemplateJson) {
+    public KafkaProducer(KafkaTemplate<String, List<MarketData>> kafkaTemplate, KafkaTemplate<String, SystemLog> kafkaTemplateJson) {
         this.kafkaTemplate = kafkaTemplate;
         this.kafkaTemplateJson = kafkaTemplateJson;
     }
@@ -35,9 +35,9 @@ public class KafkaProducer {
         kafkaTemplate.send(message);
     }
 
-    public void sendResponseToKafkaLogData(LogData data){
+    public void sendResponseToKafkaLogData(SystemLog data){
         LOGGER.info(String.format("LogData:: Response sent to Kafka -> %s", data.toString()));
-        Message<LogData> message = MessageBuilder
+        Message<SystemLog> message = MessageBuilder
                 .withPayload(data)
                 .setHeader(KafkaHeaders.TOPIC, "log-data")
                 .build();

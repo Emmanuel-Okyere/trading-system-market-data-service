@@ -1,5 +1,7 @@
 package com.tlc.group.seven.marketdataservice.marketdata.service;
 
+import com.tlc.group.seven.marketdataservice.kafka.producer.KafkaProducer;
+import com.tlc.group.seven.marketdataservice.log.model.SystemLog;
 import com.tlc.group.seven.marketdataservice.marketdata.model.MarketData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,12 @@ public class MarketDataService {
     @Autowired
     private WebClient.Builder webClientBuilder;
 
+    @Autowired
+    private KafkaProducer kafkaProducer;
+
     public List<MarketData> getMarketData(){
+        SystemLog systemLog = new SystemLog("Get Market Data", "getMarketData", "get market data from exchange", "market-data");
+        kafkaProducer.sendResponseToKafkaLogData(systemLog);
         return List.of(Objects.requireNonNull(webClientBuilder.build()
                 .get()
                 .uri("https://exchange.matraining.com/pd")

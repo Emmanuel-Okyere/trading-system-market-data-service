@@ -11,10 +11,9 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @Data
-public class LogData {
+public class SystemLog {
     private String title;
     private String event;
     private String description;
     private String service;
-    private Date timestamp;
 }
