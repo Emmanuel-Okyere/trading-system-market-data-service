@@ -49,7 +49,7 @@ public class MarketDataController {
 	}
 
 	private List<MarketData> getMarketData(String exchange){
-		systemLogService.sendSystemLogToReportingService("market data", "getMarketData", "market data fetch from exchange");
+		systemLogService.sendSystemLogToReportingService("market data", AppConstant.systemTriggeredEvent, "market data fetch from exchange");
 
 		List<MarketData> latestMarketData = marketDataService.getMarketData(exchange);
 
