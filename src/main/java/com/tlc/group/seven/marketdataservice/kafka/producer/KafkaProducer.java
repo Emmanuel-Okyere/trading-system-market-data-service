@@ -1,6 +1,6 @@
  package com.tlc.group.seven.marketdataservice.kafka.producer;
 
-import com.tlc.group.seven.marketdataservice.log.model.SystemLog;
+import com.tlc.group.seven.marketdataservice.log.system.model.SystemLog;
 import com.tlc.group.seven.marketdataservice.marketdata.model.MarketData;
 
 import org.slf4j.Logger;

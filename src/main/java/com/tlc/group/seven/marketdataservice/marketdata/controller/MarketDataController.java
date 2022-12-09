@@ -1,7 +1,8 @@
 package com.tlc.group.seven.marketdataservice.marketdata.controller;
 
+import com.tlc.group.seven.marketdataservice.constant.AppConstant;
 import com.tlc.group.seven.marketdataservice.kafka.producer.KafkaProducer;
-import com.tlc.group.seven.marketdataservice.log.model.SystemLog;
+import com.tlc.group.seven.marketdataservice.log.system.service.SystemLogService;
 import com.tlc.group.seven.marketdataservice.marketdata.model.MarketData;
 import com.tlc.group.seven.marketdataservice.marketdata.model.OrderData;
 import com.tlc.group.seven.marketdataservice.marketdata.service.MarketDataService;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,36 +27,30 @@ public class MarketDataController {
 	@Autowired
 	MarketDataService marketDataService;
 
+	@Autowired
+	SystemLogService systemLogService;
+
     @PostMapping("/webhook/{exchange}")	
 	public void latestOrder(@PathVariable String exchange, @RequestBody OrderData data){
-		System.out.println(exchange+ " outside get market");
 		List<MarketData> latestMarketData = null;
 		System.out.println(data);
 		if (exchange.equals("exchange1")){
-			System.out.println("exchange1");
 			latestMarketData = getMarketData("https://exchange.matraining.com/pd");
 		}
 		else if (exchange.equals("exchange2")){
-			System.out.println("exchange1");
 			latestMarketData = getMarketData("https://exchange2.matraining.com/pd");
 		}
 
 		if (latestMarketData != null){
-			System.out.println("kafka sent");
 			kafkaProducer.sendResponseToKafkaMarketData(latestMarketData);
 		}
 		
-		System.out.println("after all if statements");
-		SystemLog systemLog = new SystemLog("webhook", "latestOrder", "Webhook url triggered", "market-data");
-		kafkaProducer.sendResponseToKafkaLogData(systemLog);
+		systemLogService.sendSystemLogToReportingService("webhook", AppConstant.systemTriggeredEvent, "Webhook url triggered");
 	}
 
 
 	private List<MarketData> getMarketData(String exchange){
-		System.out.println("Callled market");
-		SystemLog systemLog = new SystemLog("market data", "getMarketData", "market data fetch from exchange", "market-data");
-
-		kafkaProducer.sendResponseToKafkaLogData(systemLog);
+		systemLogService.sendSystemLogToReportingService("market data", "getMarketData", "market data fetch from exchange");
 
 		List<MarketData> latestMarketData = List.of(Objects.requireNonNull(webClientBuilder.build()
 				.get()
