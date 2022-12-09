@@ -36,28 +36,22 @@ public class MarketDataController {
 		List<MarketData> latestMarketData = null;
 		System.out.println(data);
 		if (exchange.equals("exchange1")){
-			latestMarketData = getMarketData("https://exchange.matraining.com/pd");
+			latestMarketData = getMarketData( AppConstant.baseUrlExchangeOne + AppConstant.marketData);
 		}
 		else if (exchange.equals("exchange2")){
-			latestMarketData = getMarketData("https://exchange2.matraining.com/pd");
+			latestMarketData = getMarketData(AppConstant.baseUrlExchangeOne + AppConstant.marketData);
 		}
 
 		if (latestMarketData != null){
 			kafkaProducer.sendResponseToKafkaMarketData(latestMarketData);
 		}
-		
 		systemLogService.sendSystemLogToReportingService("webhook", AppConstant.systemTriggeredEvent, "Webhook url triggered");
 	}
 
 	private List<MarketData> getMarketData(String exchange){
 		systemLogService.sendSystemLogToReportingService("market data", "getMarketData", "market data fetch from exchange");
 
-		List<MarketData> latestMarketData = List.of(Objects.requireNonNull(webClientBuilder.build()
-				.get()
-				.uri(exchange)
-				.retrieve()
-				.bodyToMono(MarketData[].class)
-				.block()));
+		List<MarketData> latestMarketData = marketDataService.getMarketData(exchange);
 
 		kafkaProducer.sendResponseToKafkaMarketData(latestMarketData);
 		return latestMarketData;
