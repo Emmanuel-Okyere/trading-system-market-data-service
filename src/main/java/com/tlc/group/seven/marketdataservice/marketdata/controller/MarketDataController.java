@@ -30,6 +30,7 @@ public class MarketDataController {
 	@Autowired
 	SystemLogService systemLogService;
 
+
     @PostMapping("/webhook/{exchange}")	
 	public void latestOrder(@PathVariable String exchange, @RequestBody OrderData data){
 		List<MarketData> latestMarketData = null;
@@ -48,7 +49,6 @@ public class MarketDataController {
 		systemLogService.sendSystemLogToReportingService("webhook", AppConstant.systemTriggeredEvent, "Webhook url triggered");
 	}
 
-
 	private List<MarketData> getMarketData(String exchange){
 		systemLogService.sendSystemLogToReportingService("market data", "getMarketData", "market data fetch from exchange");
 
@@ -64,7 +64,7 @@ public class MarketDataController {
 	}
 
 	public void getMarketDataOnAppStart(){
-		kafkaProducer.sendResponseToKafkaMarketData(marketDataService.getMarketData());
+		kafkaProducer.sendResponseToKafkaMarketData(marketDataService.getMarketData(AppConstant.baseUrlExchangeOne + AppConstant.marketData));
 	}
 }
 

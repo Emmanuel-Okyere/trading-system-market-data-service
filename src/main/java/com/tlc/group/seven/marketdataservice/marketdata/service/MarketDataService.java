@@ -19,11 +19,11 @@ public class MarketDataService {
     @Autowired
     private SystemLogService systemLogService;
 
-    public List<MarketData> getMarketData(){
+    public List<MarketData> getMarketData(String endpoint){
         systemLogService.sendSystemLogToReportingService("getMarketData", AppConstant.systemTriggeredEvent, "get market data from exchange");
         return List.of(Objects.requireNonNull(webClientBuilder.build()
                 .get()
-                .uri("https://exchange.matraining.com/pd")
+                .uri(endpoint)
                 .retrieve()
                 .bodyToMono(MarketData[].class)
                 .block()));
