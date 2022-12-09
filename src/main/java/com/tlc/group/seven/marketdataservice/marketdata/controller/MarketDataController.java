@@ -66,7 +66,5 @@ public class MarketDataController {
 	public void getMarketDataOnAppStart(){
 		kafkaProducer.sendResponseToKafkaMarketData(marketDataService.getMarketData());
 	}
-
-
 }
 
